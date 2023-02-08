@@ -1,0 +1,39 @@
+import functools
+import numpy as np
+import time
+
+def my_decorator(func):
+    timmings = []
+    def wrapper(*args, **kwargs):
+        stat = kwargs.pop('stat', False)
+        start_time = time.time()
+        func(*args, **kwargs)
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        timmings.append([elapsed_time])
+        print(f"Execution time: {elapsed_time} s")
+        
+        if(stat):
+            array = np.array(timmings)
+            mean = np.mean(array)
+            minimum = np.min(array)
+            maximum = np.max(array)
+            standard_deviation = np.std(array)
+
+            print("Mean:", mean)
+            print("Minimum:", minimum)
+            print("Maximum:", maximum)
+            print("Standard Deviation:", standard_deviation)
+    return wrapper
+
+@my_decorator
+def my_function():
+    for i in range (1000): #10000
+        arr = np.random.randint(0, 100, size=(i))
+        sorted_arr = np.sort(arr)
+
+
+
+for i in range(10):
+    my_function()   
+my_function(stat = True)
